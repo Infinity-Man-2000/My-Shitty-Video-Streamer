@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Player</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #FFB6C1; /* Light Pink */
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            text-align: center;
+            background-color: #FFECF3; /* Very Light Pink */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transform: scale(1.1);
+        }
+
+        .video-container {
+            margin-bottom: 20px;
+        }
+
+        .video-name {
+            color: #FF69B4; /* Hot Pink */
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .volume {
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            width: 180px;
+            margin-bottom: 20px;
+        }
+
+        .volume-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 15px;
+            background: #FFECF3; /* Very Light Pink */
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            position: relative;
+            z-index: 2;
+            border: 2px solid #FF69B4; /* Hot Pink */
+        }
+
+        .volume-range::-webkit-slider-thumb,
+        .volume-range::-moz-range-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px; /* Width of the thumb */
+            height: 24px; /* Height of the thumb */
+            background: #FF69B4; /* Hot Pink */
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #FF69B4; /* Hot Pink */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            margin-top: -9px; /* Adjust vertical position */
+            position: relative;
+            z-index: 3;
+        }
+
+        .volume-controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .volume-controls button {
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 5px;
+            color: #FFECF3; /* Very Light Pink */
+            background-color: #FF69B4; /* Hot Pink */
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 20px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            position: relative;
+            border-radius: 10px;
+            background-color: #FFECF3; /* Very Light Pink */
+            overflow: hidden;
+            border: 2px solid #FF69B4; /* Hot Pink */
+        }
+
+        .progress-bar-value {
+            height: 100%;
+            background-color: #FF69B4; /* Hot Pink */
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+        }
+
+        .progress-bar input[type="range"] {
+            width: 100%;
+            height: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            outline: none;
+            border-radius: 10px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .progress-bar input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            position: relative;
+            z-index: 3;
+        }
+
+        .progress-bar input[type="range"]::-moz-range-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            position: relative;
+            z-index: 3;
+        }
+
+        .timer {
+            font-size: 14px; /* Reduced font size */
+            color: #FF69B4; /* Hot Pink */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            width: 80px;
+            margin-top: 10px;
+        }
+
+        .video-input {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 999;
+        }
+
+        .video-input label {
+            color: #FF69B4; /* Hot Pink */
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .video-input input[type="text"] {
+            width: 200px;
+            padding: 8px;
+            border: 2px solid #FF69B4; /* Hot Pink */
+            border-radius: 5px;
+            outline: none;
+            background-color: #FFECF3; /* Very Light Pink */
+            color: #FF69B4; /* Hot Pink */
+        }
+
+        .video-input button {
+            background-color: #FF69B4; /* Hot Pink */
+            color: #FFECF3; /* Very Light Pink */
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .video-input button:hover {
+            background-color: #FFB6C1; /* Light Pink */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <h2 class="video-name">Video</h2>
+            <div id="player"></div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+                <div class="progress-bar-value"></div>
+                <input type="range" min="0" max="100" value="0" step="0.01" id="progress">
+            </div>
+            <div class="timer" id="timer">0:00 / 0:00</div>
+        </div>
+        <div class="volume">
+            <input type="range" min="0" max="100" value="50" class="volume-range">
+        </div>
+        <div class="volume-controls">
+            <button id="decreaseVolumeButton">-</button>
+            <button id="playPauseButton"> ▸ </button>
+            <button id="increaseVolumeButton">+</button>
+        </div>
+    </div>
+    <div class="video-input">
+        <label for="videoLink">Video Link:</label>
+        <input type="text" id="videoLink" name="videoLink" placeholder="Enter YouTube video link...">
+        <button id="playCustomVideo">Play</button>
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+        const videoLinkInput = document.getElementById('videoLink');
+        const playCustomVideoButton = document.getElementById('playCustomVideo');
+        const decreaseVolumeButton = document.getElementById('decreaseVolumeButton');
+        const increaseVolumeButton = document.getElementById('increaseVolumeButton');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const progressBar = document.getElementById('progress');
+        const volumeBar = document.querySelector('.volume .volume-range');
+        const timer = document.getElementById('timer');
+        const progressBarValue = document.querySelector('.progress-bar-value');
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                playerVars: {
+                    'controls': 1,
+                    'autoplay': 0,
+                    'fs': 1,
+                    'rel': 0,
+                    'modestbranding': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            playPauseButton.addEventListener('click', togglePlayPause);
+            decreaseVolumeButton.addEventListener('click', decreaseVolume);
+            increaseVolumeButton.addEventListener('click', increaseVolume);
+            volumeBar.addEventListener('input', changeVolume);
+            playCustomVideoButton.addEventListener('click', playCustomVideo);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                playPauseButton.innerHTML = '↺'; // Set to replay symbol
+            } else if (event.data == YT.PlayerState.PAUSED) {
+                playPauseButton.innerHTML = '▸'; // Set to play symbol
+            } else if (event.data == YT.PlayerState.PLAYING) {
+                playPauseButton.innerHTML = '||'; // Set to pause symbol
+            }
+            updateProgressBar(); // Update progress bar on state change
+        }
+
+        function changeVolume() {
+            if (player) {
+                player.setVolume(volumeBar.value);
+            }
+        }
+
+        function togglePlayPause() {
+            if (player) {
+                if (player.getPlayerState() == YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
+                } else {
+                    player.playVideo();
+                }
+            }
+        }
+
+        function increaseVolume() {
+            if (player) {
+                let volume = player.getVolume();
+                if (volume < 100) {
+                    volume += 10;
+                    player.setVolume(volume);
+                    volumeBar.value = volume;
+                }
+            }
+        }
+
+        function decreaseVolume() {
+            if (player) {
+                let volume = player.getVolume();
+                if (volume > 0) {
+                    volume -= 10;
+                    player.setVolume(volume);
+                    volumeBar.value = volume;
+                }
+            }
+        }
+
+        function updateProgressBar() {
+            if (player && player.getDuration() > 0) {
+                const progress = (player.getCurrentTime() / player.getDuration()) * 100;
+                progressBar.value = progress;
+                progressBarValue.style.width = progress + '%';
+                const currentTime = formatTime(player.getCurrentTime());
+                const duration = formatTime(player.getDuration());
+                timer.textContent = `${currentTime} / ${duration}`;
+            }
+        }
+
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60);
+            return `${minutes}:${(seconds < 10 ? '0' : '')}${seconds}`;
+        }
+
+        function playCustomVideo() {
+            const videoLink = videoLinkInput.value;
+            const videoId = extractVideoId(videoLink);
+            if (videoId) {
+                player.loadVideoById(videoId);
+            } else {
+                alert("Invalid YouTube video link!");
+            }
+        }
+
+        function extractVideoId(url) {
+            const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regExp);
+            return match && match[1] ? match[1] : false;
+        }
+
+        // Handle progress bar dragging
+        let isDragging = false;
+        progressBar.addEventListener('mousedown', () => {
+            isDragging = true;
+        });
+
+        document.addEventListener('mousemove', (event) => {
+            if (isDragging && player && player.getDuration() > 0) {
+                const rect = progressBar.getBoundingClientRect();
+                const pos = (event.clientX - rect.left) / rect.width;
+                progressBar.value = pos * 100;
+                const timeToSeek = player.getDuration() * (progressBar.value / 100);
+                player.seekTo(timeToSeek, true);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        progressBar.addEventListener('input', () => {
+            if (!isDragging && player && player.getDuration() > 0) {
+                const timeToSeek = player.getDuration() * (progressBar.value / 100);
+                player.seekTo(timeToSeek, true);
+            }
+        });
+    </script>
+</body>
+</html>
