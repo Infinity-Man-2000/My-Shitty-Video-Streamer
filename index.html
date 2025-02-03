@@ -5,37 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pink Player</title>
 <style>
-    :root {
-        --bg-color-light: rgb(255, 184, 193);
-        --bg-color-dark: #333;
-        --secondary-bg-light: #fff;
-        --secondary-bg-dark: #444;
-        --text-color-light: rgb(252, 84, 168);
-        --text-color-dark: #FF69B4;
-        --overlay-color-light: rgba(255, 87, 155, 0.3);
-        --overlay-color-dark: rgba(0, 0, 0, 0.4);
-    }
-
     body {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
-        background-color: var(--bg-color-light);
+        background-color: rgb(255, 184, 193);
         font-family: Arial, sans-serif;
-        transition: background-color 0.3s ease;
     }
-
+    
     .container {
         text-align: center;
-        background-color: var(--secondary-bg-light);
-        color: var(--text-color-light);
+        background-color: rgb(255, 255, 255);
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         transform: scale(1.1);
-        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .video-container {
@@ -50,7 +36,7 @@
         left: 0;
         width: 100%;
         height: 89%;
-        background-color: var(--overlay-color-light);
+        background-color: rgba(255, 87, 155, 0.3);
         color: pink;
         font-size: 32px;
         font-weight: bold;
@@ -62,7 +48,7 @@
     }
 
     .video-name {
-        color: var(--text-color-light);
+        color: rgb(252, 84, 168);
         font-size: 28px;
         margin-bottom: 10px;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -74,35 +60,37 @@
         margin-bottom: 20px;
     }
 
+    /* Volume slider thumb styling */
     .volume-range {
         -webkit-appearance: none;
         appearance: none;
         width: 100%;
         height: 8px;
         border-radius: 10px;
-        background-color: var(--secondary-bg-light);
+        background-color: rgb(255, 255, 255);
         outline: none;
         opacity: 0.7;
-        border: 2px solid var(--text-color-light);
+        border: 2px solid rgb(226, 60, 143);
     }
-
-    .volume-range::-webkit-slider-thumb,
+    .volume-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        background-color: rgb(226, 60, 143);
+        cursor: pointer;
+        border-radius: 50%;
+        border: 2px solid rgb(226, 60, 143);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
     .volume-range::-moz-range-thumb {
         width: 10px;
         height: 10px;
-        background: #FF69B4; /* Pink color */
+        background-color: rgb(226, 60, 143);
         cursor: pointer;
         border-radius: 50%;
-        border: 2px solid #FF69B4; /* Pink border */
+        border: 2px solid rgb(226, 60, 143);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        margin-top: -1px; /* Adjust if needed */
-    }
-
-    /* Dark mode slider thumb */
-    body.dark-mode .volume-range::-webkit-slider-thumb,
-    body.dark-mode .volume-range::-moz-range-thumb {
-        background: #FF69B4; /* Keep it pink in dark mode */
-        border: 2px solid #FF69B4; /* Keep it pink in dark mode */
     }
 
     .progress-bar-container {
@@ -115,19 +103,20 @@
         margin: 0 auto;
     }
 
+    /* Progress bar and thumb styling */
     .progress-bar {
         width: 100%;
         height: 10px;
         position: relative;
         border-radius: 10px;
-        background-color: var(--secondary-bg-light);
+        background-color: rgb(255, 255, 255);
         overflow: hidden;
-        border: 2px solid var(--text-color-light);
+        border: 2px solid rgb(226, 60, 143);
     }
 
     .progress-bar-value {
         height: 100%;
-        background-color: var(--text-color-light);
+        background-color: rgb(226, 60, 143);
         width: 0%;
         transition: width 0.1s ease;
     }
@@ -144,24 +133,27 @@
         top: 0;
         left: 0;
     }
-
-    .progress-bar input[type="range"]::-webkit-slider-thumb,
+    .progress-bar input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        background: #FF69B4;
+        cursor: pointer;
+        border-radius: 50%;
+        border: 2px solid #FF69B4;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        margin-top: -4px;
+    }
     .progress-bar input[type="range"]::-moz-range-thumb {
         width: 10px;
         height: 10px;
-        background: #FF69B4; /* Pink color */
+        background: #FF69B4;
         cursor: pointer;
         border-radius: 50%;
-        border: 2px solid #FF69B4; /* Pink border */
+        border: 2px solid #FF69B4;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        margin-top: -1px; /* Adjust if needed */
-    }
-
-    /* Dark mode slider thumb */
-    body.dark-mode .progress-bar input[type="range"]::-webkit-slider-thumb,
-    body.dark-mode .progress-bar input[type="range"]::-moz-range-thumb {
-        background: #FF69B4; /* Keep it pink in dark mode */
-        border: 2px solid #FF69B4; /* Keep it pink in dark mode */
+        margin-top: -4px;
     }
 
     .timer {
@@ -181,13 +173,15 @@
     .video-input label {
         color: #FF69B4;
         font-size: 15px;
+        display: block; /* This makes the label appear above the input */
+        margin-bottom: 5px;
     }
 
     .video-input input[type="text"] {
         width: 170px;
         padding: 8px;
         border: 2px solid #FF69B4;
-        border-radius: 5px;
+        border-radius: 15px;
         background-color: #FFECF3;
         color: #FF69B4;
     }
@@ -196,7 +190,7 @@
         background-color: #FF69B4;
         color: #FFECF3;
         border: none;
-        border-radius: 5px;
+        border-radius: 15px;
         padding: 8px 16px;
         cursor: pointer;
         font-size: 16px;
@@ -205,13 +199,13 @@
     .volume-controls {
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 10px;
     }
 
     .volume-controls button {
         font-size: 18px;
         cursor: pointer;
-        margin: 0 5px;
         color: #FFECF3;
         background-color: #FF69B4;
         border: none;
@@ -225,53 +219,46 @@
     }
 
     .volume-controls button:hover {
-        background-color:;
+        background-color: rgb(217, 13, 162);
+    }
+    /* 1 & 2. Hover Effects and Smooth Transitions on Buttons */
+    .volume-controls button:hover {
+      background-color: rgb(217, 13, 162);
+      transform: scale(1.1);
+    }
+    .volume-controls button {
+      transition: transform 0.2s, background-color 0.2s;
     }
 
-    /* Dark mode styling */
-    body.dark-mode {
-        background-color: var(--bg-color-dark);
+    /* 3. Highlight Active Progress and Volume Thumbs */
+    .progress-bar input[type="range"]::-webkit-slider-thumb:hover,
+    .volume-range::-webkit-slider-thumb:hover {
+      background-color: #FF85C1; /* Lighter pink for feedback */
+      transform: scale(1.2); /* Enlarge thumb slightly */
+    }
+    .progress-bar input[type="range"]::-webkit-slider-thumb,
+    .volume-range::-webkit-slider-thumb {
+      transition: transform 0.1s, background-color 0.1s;
     }
 
-    .container.dark-mode {
-        background-color: var(--secondary-bg-dark);
-        color: var(--text-color-dark);
+    /* 6. Invalid Input Feedback Animation */
+    .video-input input[type="text"].error {
+        animation: shake 0.8s ease; /* Slower shake duration */
     }
 
-    .paused-overlay.dark-mode {
-        background-color: var(--overlay-color-dark);
-    }
-
-    .theme-toggle {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 1000;
-    }
-
-    .theme-toggle button {
-        background-color: transparent;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: var(--text-color-light);
-        transition: color 0.3s ease;
-    }
-
-    body.dark-mode .theme-toggle button {
-        color: var(--text-color-dark);
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } /* Increased shake distance */
+        20%, 40%, 60%, 80% { transform: translateX(10px); }
     }
 </style>
 </head>
 <body>
-    <div class="theme-toggle">
-        <button id="themeToggleButton">🌙</button>
-    </div>
     <div class="container">
         <div class="video-container">
             <h2 class="video-name">Video</h2>
             <div id="player"></div>
-            <div class="paused-overlay">Paused</div> <!-- Paused overlay div -->
+            <div class="paused-overlay">Paused</div>
         </div>
         <div class="progress-bar-container">
             <div class="progress-bar">
@@ -285,144 +272,94 @@
         </div>
         <div class="volume-controls">
             <button id="decreaseTimeButton"><<</button>
-            <button id="playButton">▶</button> <!-- Play button -->
-            <button id="pauseButton" style="display: none;">❚❚</button> <!-- Pause button -->
+            <button id="playPauseButton">▶</button>
             <button id="increaseTimeButton">>></button>
         </div>
     </div>
     <div class="video-input">
         <label for="videoLink">Video Link:</label>
-        <br>
-        <input type="text" id="videoLink" name="videoLink" placeholder="Enter YouTube video link...">
+        <input type="text" id="videoLink" placeholder="Enter YouTube video link...">
         <button id="playCustomVideo">Play</button>
     </div>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script>
-	const themeToggleButton = document.getElementById('themeToggleButton');
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player, isDragging = false;
 
-themeToggleButton.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    const container = document.querySelector('.container');
-    const overlay = document.querySelector('.paused-overlay');
-   
-    container.classList.toggle('dark-mode');
-    overlay.classList.toggle('dark-mode');
-    	    // Change icon based on theme
-    themeToggleButton.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-	});
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360', width: '640',
+                playerVars: { autoplay: 0, controls: 0, rel: 0, showinfo: 0, modestbranding: 1 },
+                events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+            });
+        }
 
-    let player;
-    let isDragging = false;
+        function onPlayerReady() {
+            const volumeSlider = document.getElementById('volumeSlider');
+            const progress = document.getElementById('progress');
+            volumeSlider.addEventListener('input', e => player.setVolume(e.target.value));
 
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '360',
-            width: '640',
-            playerVars: {
-                autoplay: 0,
-                controls: 0,
-                rel: 0,
-                showinfo: 0,
-                modestbranding: 1,
-                enablejsapi: 1,
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange,
-            },
-        });
-    }
-
-    function onPlayerReady(event) {
-        const volumeSlider = document.getElementById('volumeSlider');
-        volumeSlider.addEventListener('input', function () {
-            player.setVolume(volumeSlider.value);
-        });
-
-        const progressBar = document.getElementById('progress');
-        progressBar.addEventListener('input', function () {
-            isDragging = true;
-            player.seekTo(player.getDuration() * (progressBar.value / 100), true);
+            // Handle drag events for the progress bar
+            progress.addEventListener('mousedown', () => isDragging = true);
+            progress.addEventListener('mouseup', () => {
             isDragging = false;
-        });
+            player.seekTo(player.getDuration() * (progress.value / 100), true);
+            });
 
-        setInterval(updateProgressBar, 1000);
-    }
+            // Only update when not dragging
+            progress.addEventListener('input', e => {
+            if (!isDragging) player.seekTo(player.getDuration() * (e.target.value / 100), true);
+            });
 
-    function onPlayerStateChange(event) {
-        const pausedOverlay = document.querySelector('.paused-overlay');
-        if (event.data === YT.PlayerState.PAUSED) {
-            pausedOverlay.style.display = 'flex'; // Show the paused overlay
-            document.getElementById('playButton').style.display = 'inline'; // Show play button
-            document.getElementById('pauseButton').style.display = 'none'; // Hide pause button
-        } else if (event.data === YT.PlayerState.PLAYING) {
-            pausedOverlay.style.display = 'none'; // Hide the paused overlay
-            document.getElementById('playButton').style.display = 'none'; // Hide play button
-            document.getElementById('pauseButton').style.display = 'inline'; // Show pause button
-        }
-    }
-
-    function updateProgressBar() {
-        const progressBar = document.getElementById('progress');
-        const progressBarValue = document.getElementById('progressBarValue');
-        const timer = document.getElementById('timer');
-        const currentTime = player.getCurrentTime();
-        const duration = player.getDuration();
-
-        if (!isDragging && duration > 0) {
-            const value = (currentTime / duration) * 100;
-            progressBar.value = value;
-            progressBarValue.style.width = value + '%';
+            document.getElementById('playPauseButton').addEventListener('click', togglePlayPause);
+            document.getElementById('increaseTimeButton').addEventListener('click', () => player.seekTo(player.getCurrentTime() + 10, true));
+            document.getElementById('decreaseTimeButton').addEventListener('click', () => player.seekTo(player.getCurrentTime() - 10, true));
+            document.getElementById('playCustomVideo').addEventListener('click', playCustomVideo);
+            setInterval(updateProgressBar, 1000);
         }
 
-        // Update timer
-        timer.innerText = formatTime(currentTime) + ' / ' + formatTime(duration);
-    }
-
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    // Play custom video from input field
-    document.getElementById('playCustomVideo').addEventListener('click', () => {
-        const videoLink = document.getElementById('videoLink').value;
-        const videoId = getYouTubeVideoID(videoLink);
-        if (videoId) {
-            player.loadVideoById(videoId);
-        } else {
-            alert('Invalid YouTube link.');
+        function onPlayerStateChange(event) {
+            const pausedOverlay = document.querySelector('.paused-overlay');
+            pausedOverlay.style.display = event.data === YT.PlayerState.PAUSED ? 'flex' : 'none';
+            document.getElementById('playPauseButton').textContent = event.data === YT.PlayerState.PLAYING ? '❚❚' : '▶';
         }
-    });
 
-    function getYouTubeVideoID(url) {
-        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/;
-        const matches = url.match(regex);
-        return matches ? matches[1] : null;
-    }
+        function updateProgressBar() {
+            const currentTime = player.getCurrentTime(), duration = player.getDuration();
+            if (!isDragging && duration > 0) {
+                const value = (currentTime / duration) * 100;
+                document.getElementById('progress').value = value;
+                document.getElementById('progressBarValue').style.width = `${value}%`;
+            }
+            document.getElementById('timer').textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+        }
 
-    // Play and pause button functionality
-    document.getElementById('playButton').addEventListener('click', () => {
-        player.playVideo();
-        document.getElementById('playButton').style.display = 'none'; // Hide play button
-        document.getElementById('pauseButton').style.display = 'inline'; // Show pause button
-    });
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60), secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
 
-    document.getElementById('pauseButton').addEventListener('click', () => {
-        player.pauseVideo();
-        document.getElementById('pauseButton').style.display = 'none'; // Hide pause button
-        document.getElementById('playButton').style.display = 'inline'; // Show play button
-    });
+        function playCustomVideo() {
+            const videoLinkInput = document.getElementById('videoLink');
+            const videoId = getYouTubeVideoID(videoLinkInput.value);
+    
+            if (videoId) {
+                player.loadVideoById(videoId);
+                videoLinkInput.classList.remove('error'); // Remove error class if link is valid
+            } else {
+                videoLinkInput.classList.add('error'); // Add error class to trigger shake
+                setTimeout(() => videoLinkInput.classList.remove('error'), 500); // Remove error class after shake
+                alert('Invalid YouTube link.');
+            }
+        }
+        function getYouTubeVideoID(url) {
+            const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/.*v=|youtu\.be\/)([^&\n]{11})/);
+            return match ? match[1] : null;
+        }
 
-    // Fast forward and rewind functionality
-    document.getElementById('increaseTimeButton').addEventListener('click', () => {
-        player.seekTo(player.getCurrentTime() + 10, true); // Seek forward by 10 seconds
-    });
-
-    document.getElementById('decreaseTimeButton').addEventListener('click', () => {
-        player.seekTo(player.getCurrentTime() - 10, true); // Seek backward by 10 seconds
-    });
-</script>
+        function togglePlayPause() {
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+            else player.playVideo();
+        }
+    </script>
 </body>
 </html>
